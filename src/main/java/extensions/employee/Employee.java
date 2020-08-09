@@ -44,7 +44,11 @@ public class Employee extends Extension {
          */
         hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUsers", roomUserList::onRoomUsers);
         hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserRemove", roomUserList::onRoomUserRemove);
-        hashSupport.intercept(HMessage.Direction.TOSERVER, "RequestRoomLoad", roomUserList::onRequestRoomLoad);
+        hashSupport.intercept(HMessage.Direction.TOSERVER, "RequestRoomLoad", message -> {
+            roomUserList.onRequestRoomLoad(message);
+            helpDeskList.clear();
+
+        });
     }
 
 }

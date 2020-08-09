@@ -9,15 +9,21 @@ public class HelpDeskList {
     private ArrayList<HelpDesk> helpDesks = new ArrayList<>();
 
     public HelpDeskList() {
-        helpDesks.add(new HelpDesk(new HPoint(9, 14), new HPoint(9, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(10, 14), new HPoint(10, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(11, 14), new HPoint(11, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(12, 14), new HPoint(12, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(13, 14), new HPoint(13, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(14, 14), new HPoint(14, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(15, 14), new HPoint(15, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(16, 14), new HPoint(16, 12)));
-        helpDesks.add(new HelpDesk(new HPoint(17, 14), new HPoint(17, 12)));
+        helpDesks.add(new HelpDesk(new HPoint(10, 29), new HPoint(12, 29), "back"));
+        helpDesks.add(new HelpDesk(new HPoint(10, 27), new HPoint(12, 27), "back"));
+        helpDesks.add(new HelpDesk(new HPoint(10, 23), new HPoint(12, 23), "back"));
+        helpDesks.add(new HelpDesk(new HPoint(10, 21), new HPoint(12, 21), "back"));
+        helpDesks.add(new HelpDesk(new HPoint(25, 10), new HPoint(25, 12), "back"));
+        helpDesks.add(new HelpDesk(new HPoint(27, 10), new HPoint(27, 12), "back"));
+        helpDesks.add(new HelpDesk(new HPoint(29, 10), new HPoint(29, 12), "back"));
+        helpDesks.add(new HelpDesk(new HPoint(17, 30), new HPoint(20, 30), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(17, 28), new HPoint(20, 28), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(17, 25), new HPoint(20, 25), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(17, 23), new HPoint(20, 23), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(23, 17), new HPoint(23, 20), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(25, 17), new HPoint(25, 20), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(28, 17), new HPoint(28, 20), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(30, 17), new HPoint(30, 20), "front"));
     }
 
     /**
@@ -95,8 +101,16 @@ public class HelpDeskList {
             HEntity tenantOccupant = desk.tenant.occupant;
             String ownerName = ownerOccupant == null ? "null" : ownerOccupant.getName();
             String tenantName = tenantOccupant == null ? "null" : tenantOccupant.getName();
-            System.out.println("Owner " + ownerName + " - Tenant: " + tenantName);
+            System.out.println("Owner " + ownerName + " - Tenant: " + tenantName + " - Type: " + desk.type);
         }
+    }
+
+    public void clear() {
+        for (HelpDesk desk : helpDesks) {
+            desk.owner.occupant = null;
+            desk.tenant.occupant = null;
+        }
+        System.out.println("Clear all occupants");
     }
 
 }
