@@ -3,7 +3,6 @@ package extensions.employee;
 import gearth.extensions.parsers.HPoint;
 
 public interface UserAwarePointsPair {
-    public boolean occupied = false;
-    public UserAwarePoint userAwarePoint = null;
-    public HPoint point = null;
+    public UserAwarePoint owner = null;
+    public UserAwarePoint tenant = null;
 }
