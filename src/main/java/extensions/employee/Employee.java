@@ -1,7 +1,9 @@
 package extensions.employee;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import gearth.extensions.Extension;
 import gearth.extensions.ExtensionInfo;
+import gearth.extensions.parsers.HPoint;
 import gearth.protocol.HMessage;
 import gearth.protocol.HPacket;
 
@@ -21,29 +23,11 @@ public class Employee extends Extension {
         super(args);
     }
 
-    private boolean done = true;
-
     protected void initExtension() {
         intercept(HMessage.Direction.TOCLIENT, message -> {
-            if (!done) {
-                HPacket packet = message.getPacket();
-                if (packet.length() == 11) {
-                    if (packet.readByte(14) == 0 || packet.readByte(14) == 1) {
-                        packet.replaceInt(6, 7);
-                        packet.replaceInt(10, 7);
-                        packet.replaceBoolean(14, true);
-
-                        done = true;
-                        writeToConsole("Replaced user permissions");
-                    }
-                }
-            }
+            // this is just a test
+            sendToServer(PacketFactory.buildWalkPacketFromCoords(14, 26));
         });
-
-        intercept(HMessage.Direction.TOSERVER, 4000, message -> done = false);
     }
 
-//    protected void onStartConnection() {
-//        done = false;
-//    }
 }
