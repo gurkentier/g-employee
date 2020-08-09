@@ -4,5 +4,5 @@ import gearth.extensions.parsers.HPoint;
 
 public interface UserAwarePoint {
     public boolean occupied = false;
-    public HPoint point = null;
+    public HPoint point     = null;
 }

@@ -7,13 +7,13 @@ import gearth.extensions.extra.harble.HashSupport;
 import gearth.protocol.HMessage;
 import gearth.protocol.HPacket;
 
-
 @ExtensionInfo(
         Title = "Employee",
         Description = "get those coins",
         Version = "1.0",
         Author = "DominikDE & gurkentier"
 )
+
 public class Employee extends Extension {
 
     public static void main(String[] args) {
@@ -26,6 +26,7 @@ public class Employee extends Extension {
     public HashSupport hashSupport = null;
     public ChatConsole chatConsole = null;
 
+    @Override
     protected void initExtension() {
         hashSupport = new HashSupport(this);
         chatConsole = new ChatConsole(hashSupport, this, "Employee Extension initialized");
@@ -35,7 +36,6 @@ public class Employee extends Extension {
         hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserStatus", message -> {
             HPacket packet = message.getPacket();
             roomUserStatusHandler.handle(packet, roomUserList);
-            roomUserList.printUsers();
         });
 
         /*

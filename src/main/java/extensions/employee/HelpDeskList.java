@@ -1,14 +1,16 @@
 package extensions.employee;
 
-
 import gearth.extensions.parsers.HPoint;
-
 import java.util.ArrayList;
 
 public class HelpDeskList {
 
     private ArrayList<HelpDesk> helpDesks = new ArrayList<>();
 
+    /**
+     * @param point HPoint
+     * @return HelpDesk
+     */
     public HelpDesk getDeskByOwnerPoint(HPoint point) {
         HelpDesk result = null;
         for (HelpDesk pair : helpDesks) {
@@ -22,6 +24,10 @@ public class HelpDeskList {
         return result;
     }
 
+    /**
+     * @param point HPoint
+     * @return HelpDesk
+     */
     public HelpDesk getDeskByTenantPoint(HPoint point) {
         HelpDesk result = null;
         for (HelpDesk pair : helpDesks) {
