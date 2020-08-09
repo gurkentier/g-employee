@@ -1,25 +1,26 @@
 package extensions.employee;
 
+import gearth.extensions.parsers.HEntity;
 import gearth.extensions.parsers.HPoint;
 import gearth.protocol.HPacket;
 
 public class RoomUserStatusHandler {
-    public HPacket packet = null;
 
-    public RoomUserStatusHandler(HPacket packet) {
-        this.packet = packet;
+    public void handle(HPacket packet,RoomUserList roomUserList) {
+        packet.readInteger();
+        int localUserId = packet.readInteger();
+        System.out.println("user: " + this.resolveUser(localUserId, roomUserList).getName());
+        HPoint tile = new HPoint(packet.readInteger(), packet.readInteger());
+        System.out.println("X " + tile.getX() + " - Y " + tile.getY());
+        packet.readString();
+        packet.readInteger();
+        packet.readInteger();
+        String action = packet.readString();
+        System.out.println(action);
     }
 
-    public void handle() {
-        this.packet.readInteger();
-        this.packet.readInteger();
-        HPoint tile = new HPoint(this.packet.readInteger(), this.packet.readInteger());
-        System.out.println("X " + tile.getX() + " - Y " + tile.getY());
-        this.packet.readString();
-        this.packet.readInteger();
-        this.packet.readInteger();
-        String action = this.packet.readString();
-        System.out.println(action);
+    public HEntity resolveUser(int idx, RoomUserList roomUserList) {
+        return roomUserList.getEntityByIndex(idx);
     }
 }
 

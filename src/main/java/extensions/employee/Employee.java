@@ -1,9 +1,9 @@
 package extensions.employee;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import gearth.extensions.Extension;
 import gearth.extensions.ExtensionInfo;
-import gearth.extensions.parsers.HPoint;
+import gearth.extensions.extra.harble.ChatConsole;
+import gearth.extensions.extra.harble.HashSupport;
 import gearth.protocol.HMessage;
 import gearth.protocol.HPacket;
 
@@ -23,12 +23,27 @@ public class Employee extends Extension {
         super(args);
     }
 
+    public HashSupport hashSupport = null;
+    public ChatConsole chatConsole = null;
+
     protected void initExtension() {
-        intercept(HMessage.Direction.TOCLIENT, 2635, message -> {
+        hashSupport = new HashSupport(this);
+        chatConsole = new ChatConsole(hashSupport, this, "Employee Extension initialized");
+        RoomUserStatusHandler roomUserStatusHandler = new RoomUserStatusHandler();
+        RoomUserList roomUserList = new RoomUserList();
+
+        hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserStatus", message -> {
             HPacket packet = message.getPacket();
-            //System.out.println(packet.toString());
-            (new RoomUserStatusHandler(packet)).handle();
+            roomUserStatusHandler.handle(packet, roomUserList);
+            roomUserList.printUsers();
         });
+
+        /*
+        Room User List
+         */
+        hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUsers", roomUserList::onRoomUsers);
+        hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserRemove", roomUserList::onRoomUserRemove);
+        hashSupport.intercept(HMessage.Direction.TOSERVER, "RequestRoomLoad", roomUserList::onRequestRoomLoad);
     }
 
 }
