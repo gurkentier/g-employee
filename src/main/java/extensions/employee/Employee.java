@@ -24,9 +24,10 @@ public class Employee extends Extension {
     }
 
     protected void initExtension() {
-        intercept(HMessage.Direction.TOCLIENT, message -> {
-            // this is just a test
-            sendToServer(PacketFactory.buildWalkPacketFromCoords(14, 26));
+        intercept(HMessage.Direction.TOCLIENT, 2635, message -> {
+            HPacket packet = message.getPacket();
+            //System.out.println(packet.toString());
+            (new RoomUserStatusHandler(packet)).handle();
         });
     }
 

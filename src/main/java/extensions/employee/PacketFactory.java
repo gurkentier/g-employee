@@ -7,6 +7,7 @@ public class PacketFactory {
 
     public static HPacket buildWalkPacketFromPoint(HPoint point) {
         int HEADER = 2998;
+        //return new HPacket(HEADER, point.getX(), point.getY());
         return new HPacket("{l}{u:"+ HEADER +"}{i:"+ point.getX() +"}{i:" + point.getY() +"}");
     }
 
