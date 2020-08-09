@@ -5,13 +5,13 @@ import gearth.protocol.HPacket;
 
 public class PacketFactory {
 
-    public static HPacket buildWalkPacketFromCoords(int x, int y) {
+    public static HPacket buildWalkPacketFromPoint(HPoint point) {
         int HEADER = 2998;
+        return new HPacket("{l}{u:"+ HEADER +"}{i:"+ point.getX() +"}{i:" + point.getY() +"}");
+    }
+
+    public static HPacket buildWalkPacketFromCoords(int x, int y) {
         return buildWalkPacketFromPoint(new HPoint(x, y));
     }
 
-    public static HPacket buildWalkPacketFromPoint(HPoint point) {
-        int HEADER = 2998;
-        return new HPacket("{l}{u:2990}{i:"+ point.getX() +"}{i:" + point.getY() +"}");
-    }
 }
