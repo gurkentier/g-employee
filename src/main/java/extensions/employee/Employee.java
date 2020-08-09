@@ -32,10 +32,11 @@ public class Employee extends Extension {
         chatConsole = new ChatConsole(hashSupport, this, "Employee Extension initialized");
         RoomUserStatusHandler roomUserStatusHandler = new RoomUserStatusHandler();
         RoomUserList roomUserList = new RoomUserList();
+        HelpDeskList helpDeskList = new HelpDeskList();
 
         hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserStatus", message -> {
             HPacket packet = message.getPacket();
-            roomUserStatusHandler.handle(packet, roomUserList);
+            roomUserStatusHandler.handle(packet, roomUserList, helpDeskList);
         });
 
         /*

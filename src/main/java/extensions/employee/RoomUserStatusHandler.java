@@ -1,7 +1,6 @@
 package extensions.employee;
 
 import gearth.extensions.parsers.HEntity;
-import gearth.extensions.parsers.HEntityType;
 import gearth.extensions.parsers.HEntityUpdate;
 import gearth.extensions.parsers.HPoint;
 import gearth.protocol.HPacket;
@@ -12,7 +11,7 @@ public class RoomUserStatusHandler {
      * @param packet HPacket
      * @param roomUserList RoomUserList
      */
-    public void handle(HPacket packet, RoomUserList roomUserList) {
+    public void handle(HPacket packet, RoomUserList roomUserList, HelpDeskList helpDeskList) {
         HEntityUpdate[] entityUpdates = HEntityUpdate.parse(packet);
         for (HEntityUpdate update : entityUpdates) {
             int index      = update.getIndex();
@@ -27,7 +26,60 @@ public class RoomUserStatusHandler {
                                 + " - Y " + tile.getY()
                                 + " performing " + update.getAction()
                 );
+
+                this.processOccupances(entity, tile, helpDeskList);
             }
+        }
+    }
+
+    /**
+     * @param entity HEntity
+     * @param tile HPoint
+     * @param helpDeskList HelpDeskList
+     */
+    public void processOccupances(HEntity entity, HPoint tile, HelpDeskList helpDeskList) {
+        this.removeOccupanceIfNecessary(entity, tile, helpDeskList);
+        this.addOccupanceIfNeccessary(entity, tile, helpDeskList);
+        helpDeskList.printHelpDesks();
+    }
+
+    /**
+     * @param entity HEntity
+     * @param tile HPoint
+     * @param helpDeskList HelpDeskList
+     */
+    public void removeOccupanceIfNecessary(HEntity entity, HPoint tile, HelpDeskList helpDeskList) {
+        HelpDesk desk = helpDeskList.getDeskByOwnerOccupant(entity);
+        if(desk != null) {
+            HPoint ownerPoint = desk.owner.point;
+            if(ownerPoint.getX() != tile.getX() || ownerPoint.getY() != tile.getY()) {
+                desk.owner.occupant = null;
+            }
+        }
+
+        desk = helpDeskList.getDeskByTenantOccupant(entity);
+        if(desk != null) {
+            HPoint tenantPoint = desk.owner.point;
+            if(tenantPoint.getX() != tile.getX() || tenantPoint.getY() != tile.getY()) {
+                desk.tenant.occupant = null;
+            }
+        }
+    }
+
+    /**
+     * @param entity HEntity
+     * @param tile HPoint
+     * @param helpDeskList HelpDeskList
+     */
+    public void addOccupanceIfNeccessary(HEntity entity, HPoint tile, HelpDeskList helpDeskList) {
+        HelpDesk desk = helpDeskList.getDeskByOwnerPoint(tile);
+        if(desk != null) {
+            desk.owner.occupant = entity;
+        }
+
+        desk = helpDeskList.getDeskByTenantPoint(tile);
+        if(desk != null) {
+            desk.tenant.occupant = entity;
         }
     }
 

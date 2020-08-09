@@ -1,9 +1,10 @@
 package extensions.employee;
 
+import gearth.extensions.parsers.HEntity;
 import gearth.extensions.parsers.HPoint;
 
 public class UserAwareTile implements UserAwarePoint {
-    public boolean occupied = false;
+    public HEntity occupant = null;
     public HPoint point     = null;
 
     /**
