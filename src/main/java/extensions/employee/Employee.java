@@ -45,17 +45,13 @@ public class Employee extends Extension {
             String userIdx = packet.readString();
             HEntity entity = roomUserList.getEntityByIndex(Integer.parseInt(userIdx));
             helpDeskList.clearOccupancesForEntity(entity);
+            roomUserList.onRoomUserRemove(message);
         });
-
-        /*
-        Room User List
-         */
+        
         hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUsers", roomUserList::onRoomUsers);
-        hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserRemove", roomUserList::onRoomUserRemove);
         hashSupport.intercept(HMessage.Direction.TOSERVER, "RequestRoomLoad", message -> {
             roomUserList.onRequestRoomLoad(message);
             helpDeskList.clear();
-
         });
     }
 
