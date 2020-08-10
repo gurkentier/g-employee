@@ -20,7 +20,7 @@ public class RoomUserStatusHandler {
                 entity.tryUpdate(update);
                 HPoint tile = entity.getTile();
                 System.out.println(
-                        "User " + entity.getName()
+                         entity.getEntityType() + " " + entity.getName()
                                 + " on coords: "
                                 + "X " + tile.getX()
                                 + " - Y " + tile.getY()

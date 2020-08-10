@@ -24,6 +24,18 @@ public class HelpDeskList {
         helpDesks.add(new HelpDesk(new HPoint(25, 17), new HPoint(25, 20), "front"));
         helpDesks.add(new HelpDesk(new HPoint(28, 17), new HPoint(28, 20), "front"));
         helpDesks.add(new HelpDesk(new HPoint(30, 17), new HPoint(30, 20), "front"));
+        helpDesks.add(new HelpDesk(new HPoint(17, 4), new HPoint(17, 7), "security"));
+        helpDesks.add(new HelpDesk(new HPoint(20, 4), new HPoint(20, 7), "security"));
+    }
+
+    /**
+     * @param occupant HEntity´
+     */
+    public void clearOccupancesForEntity(HEntity occupant) {
+        HelpDesk desk = this.getDeskByOwnerOccupant(occupant);
+        if(desk != null) desk.owner.occupant = null;
+        desk = this.getDeskByTenantOccupant(occupant);
+        if(desk != null) desk.tenant.occupant = null;
     }
 
     /**
@@ -35,7 +47,7 @@ public class HelpDeskList {
         for (HelpDesk pair : helpDesks) {
             UserAwareTile ownerTile = pair.owner;
             assert ownerTile != null;
-            if (ownerTile.occupant != null && ownerTile.occupant.getName().equals(occupant.getName())) {
+            if (ownerTile.occupant != null && ownerTile.occupant.getName().equals(occupant.getName()) && ownerTile.occupant.getEntityType() == occupant.getEntityType()) {
                 result = pair;
             }
         }
@@ -52,7 +64,7 @@ public class HelpDeskList {
         for (HelpDesk pair : helpDesks) {
             UserAwareTile tenantTile = pair.tenant;
             assert tenantTile != null;
-            if (tenantTile.occupant != null && tenantTile.occupant.getName().equals(occupant.getName())) {
+            if (tenantTile.occupant != null && tenantTile.occupant.getName().equals(occupant.getName()) && tenantTile.occupant.getEntityType() == occupant.getEntityType()) {
                 result = pair;
             }
         }

@@ -4,6 +4,7 @@ import gearth.extensions.Extension;
 import gearth.extensions.ExtensionInfo;
 import gearth.extensions.extra.harble.ChatConsole;
 import gearth.extensions.extra.harble.HashSupport;
+import gearth.extensions.parsers.HEntity;
 import gearth.protocol.HMessage;
 import gearth.protocol.HPacket;
 
@@ -37,6 +38,13 @@ public class Employee extends Extension {
         hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserStatus", message -> {
             HPacket packet = message.getPacket();
             roomUserStatusHandler.handle(packet, roomUserList, helpDeskList);
+        });
+
+        hashSupport.intercept(HMessage.Direction.TOCLIENT, "RoomUserRemove", message -> {
+            HPacket packet = message.getPacket();
+            String userIdx = packet.readString();
+            HEntity entity = roomUserList.getEntityByIndex(Integer.parseInt(userIdx));
+            helpDeskList.clearOccupancesForEntity(entity);
         });
 
         /*
